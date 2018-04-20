@@ -18,3 +18,12 @@ A collection of scripts to grab author data from scopus.com
 
 * Run `python get_author_info.py`.
 
+## Notes
+
+#### On why author metric from author retrieval API differs from scopus.com:
+
+The Author Profile page in the Scopus web interface calculates author metrics on-the-fly from a constantly updated database. Author metrics returned by the Author Retrieval API are fetched from a different database, which is updated every few weeks. 
+
+Furthermore, this database only uses content published from 1996 onwards, which is why authors who have published prior to 1996 will show lower metrics through the API. All other data returned through the APIs is in sync with scopus.com. 
+
+Ref: [Elsevier developer FAQ](https://dev.elsevier.com/tecdoc_developer_faq.html)
