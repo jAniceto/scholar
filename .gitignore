@@ -1,3 +1,7 @@
 
 config.json
 author-info.csv
+
+venv/
+.idea/
+logs/
