@@ -15,23 +15,27 @@ import json
 import csv
 
 
-AUTHOR_LIST = ['7005209482',
-                '7102638942',
-                '35502091400',
-                '35413314000',
-                '7203016479',
-                '7102165550',
-                '35109024200',
-                '7201905260',
-                '7201534122',
-                '35598739000',
-                '6602264945',
-                '7005206227',
-                '7103157456',
-                '24492122900',
-                '57200173922',
-                '26643558900',
-                '7102525310']                
+# AUTHOR_LIST = ['7005209482',
+#                 '7102638942',
+#                 '35502091400',
+#                 '35413314000',
+#                 '7203016479',
+#                 '7102165550',
+#                 '35109024200',
+#                 '7201905260',
+#                 '7201534122',
+#                 '35598739000',
+#                 '6602264945',
+#                 '7005206227',
+#                 '7103157456',
+#                 '24492122900',
+#                 '57200173922',
+#                 '26643558900',
+#                 '7102525310']
+
+with open('authors.json', 'r') as fp:
+    data = json.load(fp)
+    AUTHOR_LIST = data['ids']
 
 
 def get_author(client, author):  
@@ -56,11 +60,16 @@ def get_author(client, author):
         author_data['cit'] = my_auth.data['coredata']['citation-count']
         author_data['fields'] = field_list
         author_data['pub-range'] = my_auth.data['author-profile']['publication-range']
-        author_data['affiliation'] = {'name': my_auth.data['author-profile']['affiliation-current']['affiliation']['ip-doc']['preferred-name']['$'],
-                                      'country': my_auth.data['author-profile']['affiliation-current']['affiliation']['ip-doc']['address']['country'],
-                                      'url': my_auth.data['author-profile']['affiliation-current']['affiliation']['ip-doc']['org-URL']}
+        try:
+            author_data['affiliation'] = {'name': my_auth.data['author-profile']['affiliation-current']['affiliation']['ip-doc']['preferred-name']['$'],
+                                          'country': my_auth.data['author-profile']['affiliation-current']['affiliation']['ip-doc']['address']['country'],
+                                          'url': my_auth.data['author-profile']['affiliation-current']['affiliation']['ip-doc']['org-URL']}
+        except KeyError:
+            author_data['affiliation'] = {'name': '',
+                                          'country': '',
+                                          'url': ''}
 
-        print(author_data)
+        # print(author_data)
         
         return author_data
     
@@ -76,7 +85,7 @@ def cmd_print(data):
     print(f"h-index: {data['h-index']}")
     print(f"Documents: {data['docs']}")
     print(f"Citations: {data['cit']}")
-    print(f"Fields of study: {data['fields']}")
+    print(f"Fields of study: {data['fields'][:3]}")
 
 
 def csv_save(data):
