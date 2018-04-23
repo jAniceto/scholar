@@ -5,7 +5,7 @@ A collection of scripts to grab author data from scopus.com
 ## Usage
 
 * `pip install elsapy` 
-* In your same folder as `get_author_info.py`, create a `config.json` file and add your APIkey to it:
+* In the same folder as `get_author_info.py`, create a `config.json` file and add your APIkey to it:
     ```json
     {
 	    "apikey": "ENTER_APIKEY_HERE",
@@ -14,9 +14,26 @@ A collection of scripts to grab author data from scopus.com
     ```
     APIkey is obtained from [dev.elsevier.com](http://dev.elsevier.com). If you don't have a valid insttoken (which you would have received from Elsevier support staff), delete the placeholder text.
 
-* Insert the desired authors IDs in the `AUTHOR_LIST` varialble in the `get_author_info.py` file.
+* Create a `authors.json` file containing a list of author names or author Scopus IDs to get metrics for. Use he following format:
+    ```json
+    {
+        "ids": [
+            "7006082359",
+            "7407828513",
+            "7101712642"
+        ],
+        "names": [
+            ["Reg", "Bott"],
+            ["James", "Clark"],
+            ["Charles", "Cooney"]
+        ]
+    }
+    ```
+    If you wish to search by ID you can delete the "names" list or leave it empty.
 
-* Run `python get_author_info.py`.
+* Run `python author_search.py` if you wish to search author by names or run `python get_author_by_id.py` if you wish to search by author Scopus ID.
+
+* Follow the on screen instructions.
 
 ## Notes
 

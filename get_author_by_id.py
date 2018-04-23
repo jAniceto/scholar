@@ -15,30 +15,7 @@ import json
 import csv
 
 
-# AUTHOR_LIST = ['7005209482',
-#                 '7102638942',
-#                 '35502091400',
-#                 '35413314000',
-#                 '7203016479',
-#                 '7102165550',
-#                 '35109024200',
-#                 '7201905260',
-#                 '7201534122',
-#                 '35598739000',
-#                 '6602264945',
-#                 '7005206227',
-#                 '7103157456',
-#                 '24492122900',
-#                 '57200173922',
-#                 '26643558900',
-#                 '7102525310']
-
-with open('authors.json', 'r') as fp:
-    data = json.load(fp)
-    AUTHOR_LIST = data['ids']
-
-
-def get_author(client, author):  
+def get_author_by_id(client, author):  
     author_data = {}
 
     my_auth = ElsAuthor(uri=f"https://api.elsevier.com/content/author/author_id/{author}")
@@ -100,7 +77,24 @@ def csv_save(data):
             writer.writerow(row_to_print)
 
 
+def get_metrics(cli, id_list):
+    print('Author count: {}'.format(len(id_list)))
+
+    all_data = []
+    for author in id_list:
+        data = get_author_by_id(cli, author)
+        all_data.append(data)
+        cmd_print(data)
+
+    csv_save(all_data)
+
+
 def main():
+    # Load author ID list
+    with open('authors.json', 'r', encoding='utf-8') as fp:
+        data = json.load(fp)
+        author_list = data['ids']
+
     ## Load configuration
     with open("config.json") as con_file:
         config = json.load(con_file)
@@ -109,15 +103,8 @@ def main():
     client = ElsClient(config['apikey'])
     client.inst_token = config['insttoken']
 
-    print('Author count: {}'.format(len(AUTHOR_LIST)))
+    get_metrics(client, author_list)
 
-    all_data = []
-    for author in AUTHOR_LIST:
-        data = get_author(client, author)
-        all_data.append(data)
-        cmd_print(data)
-
-    csv_save(all_data)
 
 if __name__ == "__main__":
     main()
