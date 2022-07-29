@@ -106,6 +106,7 @@ venv.bak/
 # Other
 config.json
 author-info.csv
+authors.json
 
 venv/
 .idea/
